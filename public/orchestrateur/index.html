@@ -3,11 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Orchestrateur 3.2 — skill Claude Code</title>
-<meta name="description" content="Orchestrateur 3.2 : une session Claude, toute une équipe. Le plus petit modèle qui réussit construit, un plus fort vérifie. Claude orchestre Claude, GPT et Gemini depuis une seule conversation. − 57 % de coût au banc de 11 tâches.">
+<title>Orchestrateur 4.0 — skill Claude Code</title>
+<meta name="description" content="Orchestrateur 4.0 : une session Claude, toute une équipe. Le plus petit modèle qui réussit construit, un plus fort vérifie. Claude orchestre Claude, GPT et Gemini depuis une seule conversation. − 57 % de coût au banc de 11 tâches.">
 <meta name="robots" content="noindex">
 <meta name="color-scheme" content="dark light">
-<meta property="og:title" content="Orchestrateur 3.2 — une session Claude, toute une équipe">
+<meta property="og:title" content="Orchestrateur 4.0 — une session Claude, toute une équipe">
 <meta property="og:description" content="Le petit modèle construit, un plus fort vérifie. Claude, GPT et Gemini depuis une seule conversation. − 57 % de coût au banc de 11 tâches.">
 <meta property="og:type" content="website">
 <link rel="icon" href="../assets/orchestrateur-icon.svg">
@@ -353,7 +353,7 @@ footer a{color:var(--ink)}
 
 <header class="hero"><div class="wrap">
   <div>
-    <span class="pill"><b>Skill Claude Code</b> · <span>v<span id="ver-badge">3.2.0</span></span> · gratuit</span>
+    <span class="pill"><b>Skill Claude Code</b> · <span>v<span id="ver-badge">4.0.0</span></span> · gratuit</span>
     <h1>Une session Claude. <em style="white-space:nowrap">Toute une équipe.</em></h1>
     <p class="lead">Le plus petit modèle qui réussit construit. Un plus fort vérifie. Claude orchestre Claude, GPT et Gemini, depuis une seule conversation.</p>
     <div class="btns">
@@ -664,7 +664,7 @@ footer a{color:var(--ink)}
     <div class="bloc ligne"><code>/plugin install orchestrateur@orchestration</code><button class="btn petit" type="button" data-copier="plug2">Copier</button></div>
   </div>
   <div class="panneau" id="p-zip" role="tabpanel" aria-labelledby="t-zip" hidden>
-    <ol><li><b>Téléchargez</b> le zip si vous voulez le lire avant, ou lancez la commande : elle télécharge, vérifie l’empreinte, décompresse et installe.</li><li><b>Version</b> <span class="vers">3.2.0</span>. L’empreinte SHA-256 est vérifiée avant toute installation.</li></ol>
+    <ol><li><b>Téléchargez</b> le zip si vous voulez le lire avant, ou lancez la commande : elle télécharge, vérifie l’empreinte, décompresse et installe.</li><li><b>Version</b> <span class="vers">4.0.0</span>. L’empreinte SHA-256 est vérifiée avant toute installation.</li></ol>
     <p class="sha">SHA-256 : <span id="sha-aff">lue dans orchestrateur.zip.sha256, à côté du zip</span></p>
     <div class="bloc" id="b-zip"></div>
     <div class="btns"><a class="btn p" href="orchestrateur.zip" download>⬇︎ Télécharger orchestrateur.zip</a><button class="btn" type="button" data-copier="zip">Copier la commande</button></div>
@@ -720,7 +720,7 @@ footer a{color:var(--ink)}
   const ORIGINE = location.origin.startsWith('http') ? location.origin : 'https://app.lucashirschauer.fr';
   const ZIP = ORIGINE + '/orchestrateur/orchestrateur.zip';
   // Version et empreinte écrites à côté du zip : lues au chargement ; en cas d'échec, le texte écrit en dur reste.
-  let SHA = '(empreinte indisponible : arrête-toi)', VERSION = '3.2.0';
+  let SHA = '(empreinte indisponible : arrête-toi)', VERSION = '4.0.0';
   const TEXTES = {};
   const remplir = () => Object.assign(TEXTES, {
     plug1: '/plugin marketplace add LucasHRCHatReply/orchestrateur-releases',
