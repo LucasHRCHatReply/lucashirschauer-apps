@@ -9,7 +9,7 @@ Un jeu web de culture générale **visuel**. Le joueur choisit un thème (texte 
 - **Adresse** : https://declic.srv875929.hstgr.cloud (VPS Hostinger `31.97.156.179`, `noindex`).
 - **Service** : `declic.service` (systemd, utilisateur `declic`, `127.0.0.1:8243`), derrière nginx (`/etc/nginx/sites-available/declic`, certificat Let's Encrypt).
 - **Code sur le VPS** : `/srv/declic` (copié par rsync, pas de git). **Données** : `/var/lib/declic/cache/*.json` (un fichier par parcours ou cours généré).
-- **Code source d'origine** : dépôt `lucashi-apps`, dossier `serveur/declic/` (commits `bfec8a4`, `2793b84`, branche main, sur le Mac de Lucas, non poussé).
+- **Code source d'origine** : dépôt `lucashirschauer-apps` (ex-`lucashi-apps`), dossier `serveur/declic/` (commits `bfec8a4`, `2793b84`, branche main, sur le Mac de Lucas, non poussé).
 
 ## 2. Architecture en une image
 

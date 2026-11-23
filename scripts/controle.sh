@@ -31,7 +31,7 @@ LIENS=$(echo "$FICHIERS" | tr '\n' '\0' | xargs -0 grep -hIoE 'github\.com/Lucas
 for l in $LIENS; do
   nom=${l##*/}; nom=${nom%.git}
   case "$nom" in
-    *-releases|lucashi-apps) ;;
+    *-releases|lucashirschauer-apps|lucashi-apps) ;;
     *) refuse "lien vers un dépôt non public" "$l" ;;
   esac
   # et, si gh répond, le dépôt doit être réellement public

@@ -3,6 +3,10 @@
 Objectif : construire ce dépôt (Astro) sur le VPS, servir `dist/` en HTTPS et le tenir à jour à chaque push. Le site n'est
 plus servable tel quel depuis la racine du dépôt (GitHub Pages ne convient plus : il faut une construction).
 
+**Nom (23/11/2026).** Le dépôt s'appelle `lucashirschauer-apps` (ex-`lucashi-apps`, que GitHub redirige). Sur le VPS, les noms
+techniques gardent l'ancien nom (`/srv/lucashi-apps`, `/etc/lucashi-apps.env`, `lucashi-apps-maj`, conf nginx `lucashi-apps`) :
+invisibles du public, ils ne se renomment qu'avec un accord, car il faut toucher nginx.
+
 **Pré-requis : Node 22 ou plus (avec npm) sur le VPS.** Adresse et indexation se règlent dans `/etc/lucashi-apps.env`
 (`SITE_URL`, `INDEXABLE`) ; tant que `INDEXABLE` n'est pas `true`, chaque page porte `noindex` et `robots.txt` interdit tout.
 
@@ -19,7 +23,7 @@ ssh root@<IP>
 ## 2. État des lieux (lecture seule)
 
 ```
-curl -fsSL https://raw.githubusercontent.com/LucasHRCHatReply/lucashi-apps/main/deploiement/vps.sh | bash -s etat
+curl -fsSL https://raw.githubusercontent.com/LucasHRCHatReply/lucashirschauer-apps/main/deploiement/vps.sh | bash -s etat
 ```
 
 Il liste le système, les ports en écoute, les services, Docker, les serveurs web déjà présents, le pare-feu, la config ssh
@@ -32,7 +36,7 @@ L'hôte provisoire est `<IP-avec-tirets>.sslip.io` (par exemple l'IP 1.2.3.4 don
 DNS. `app.lucashirschauer.fr` s'ajoute dans la même commande : son certificat s'émettra dès que le DNS pointera sur le VPS.
 
 ```
-curl -fsSL https://raw.githubusercontent.com/LucasHRCHatReply/lucashi-apps/main/deploiement/vps.sh -o vps.sh
+curl -fsSL https://raw.githubusercontent.com/LucasHRCHatReply/lucashirschauer-apps/main/deploiement/vps.sh -o vps.sh
 bash vps.sh installer <IP-avec-tirets>.sslip.io app.lucashirschauer.fr
 ```
 
@@ -61,7 +65,7 @@ Le VPS Hostinger sert encore la racine du dépôt (nginx, avant Astro). Ordre à
 ssh root@<IP>
 systemctl stop lucashi-apps-maj.timer                 # plus de git pull pendant la bascule
 # (poussez main depuis le Mac)
-curl -fsSL https://raw.githubusercontent.com/LucasHRCHatReply/lucashi-apps/main/deploiement/vps.sh -o vps.sh
+curl -fsSL https://raw.githubusercontent.com/LucasHRCHatReply/lucashirschauer-apps/main/deploiement/vps.sh -o vps.sh
 bash vps.sh migrer-astro
 ```
 

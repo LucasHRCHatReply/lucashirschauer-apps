@@ -252,7 +252,7 @@ export interface ParamsIcs { debutMs: number; dureeMin?: number; titre: string; 
 
 export function genererIcs({ debutMs, dureeMin = 60, titre, description, maintenantMs = Date.now() }: ParamsIcs): string {
   const lignes = [
-    'BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//lucashi-apps//fuseaux//FR', 'CALSCALE:GREGORIAN', 'METHOD:PUBLISH',
+    'BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//lucashirschauer-apps//fuseaux//FR', 'CALSCALE:GREGORIAN', 'METHOD:PUBLISH',
     'BEGIN:VEVENT',
     `UID:${debutMs}-${Math.floor(debutMs / 60000).toString(36)}@fuseaux`,
     `DTSTAMP:${utcIcs(maintenantMs)}`,

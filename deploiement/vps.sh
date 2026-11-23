@@ -10,7 +10,7 @@
 # (SITE_URL, INDEXABLE) ; production = SITE_URL=https://app.lucashirschauer.fr et INDEXABLE=true.
 # Exemple : vps.sh installer <IP-avec-tirets>.sslip.io app.lucashirschauer.fr
 set -euo pipefail
-DEPOT="https://github.com/LucasHRCHatReply/lucashi-apps.git"
+DEPOT="https://github.com/LucasHRCHatReply/lucashirschauer-apps.git"
 DOSSIER="/srv/lucashi-apps"
 ENV_FICHIER="/etc/lucashi-apps.env"
 SCRIPT_MAJ="/usr/local/bin/lucashi-apps-maj"
