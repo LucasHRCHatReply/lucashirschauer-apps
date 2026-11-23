@@ -59,7 +59,7 @@ Le déploiement sur le VPS (construction, nginx ou Caddy, HTTPS, mise à jour to
 
 ## DNS chez IONOS (à faire par Lucas, au passage en production)
 
-Dans IONOS › Domaines › lucashi.fr › DNS : enregistrement **A**, hôte `app`, valeur l'IP du VPS (voir `deploiement/LISEZ-MOI.md`) ;
+Chez OVH, le joker `*` de lucashirschauer.fr pointe déjà sur le VPS (19/11/2026) : rien à créer pour `app` (l'ancien domaine lucashi.fr chez IONOS n'est plus utilisé) ;
 supprimer l'ancien CNAME vers GitHub Pages. Vérifier : `dig +short app.lucashirschauer.fr`, puis `curl -sI https://app.lucashirschauer.fr | head -1`.
 Ensuite, dans `/etc/lucashi-apps.env` du VPS : `SITE_URL=https://app.lucashirschauer.fr` et `INDEXABLE=true`.
 
