@@ -1,133 +1,185 @@
 {
-  "titre": "Le chantier du jour",
-  "date": "2026-11-25",
-  "fin": "2026-11-25T19:30:00+01:00",
-  "maj": "2026-11-25T09:58:56+01:00",
-  "etat": "en cours",
-  "resume": "Chercher la meilleure façon de faire trier le travail par de petits modèles qui tournent sur les Mac de la maison, mesurer, comprendre, corriger, mesurer encore, jusqu'à 19 h 30.",
-  "etapes": [
-    {
-      "n": 1,
-      "titre": "Cadrer la boucle",
-      "statut": "fait",
-      "detail": "Plan, garde-fous, fichier d'état, accès aux machines relevé (mini et M3 oui, M1 éteint)."
-    },
-    {
-      "n": 2,
-      "titre": "Page de suivi",
-      "statut": "en cours",
-      "detail": "Cette page. Elle lit un seul fichier de données, mis à jour au fil de la journée."
-    },
-    {
-      "n": 3,
-      "titre": "Banc 1 : le tri fermé",
-      "statut": "a venir",
-      "detail": "Sur le Mac mini : règle fixe seule, puis petit modèle au seuil 0,99, comparés à Claude Haiku, sur les 234 demandes du corpus d'intentions."
-    },
-    {
-      "n": 4,
-      "titre": "Banc en parallèle sur le M3",
-      "statut": "a venir",
-      "detail": "Ollama lancé sur le M3, modèles copiés depuis le mini : même banc, moitié du temps."
-    },
-    {
-      "n": 5,
-      "titre": "Interpréter",
-      "statut": "a venir",
-      "detail": "Qui se trompe, sur quoi, avec quelle assurance : on lit les erreurs, pas seulement le score."
-    },
-    {
-      "n": 6,
-      "titre": "Veille",
-      "statut": "a venir",
-      "detail": "Classements publics et code des projets sérieux avant d'inventer un mécanisme."
-    },
-    {
-      "n": 7,
-      "titre": "Fiabiliser, puis nouveau banc",
-      "statut": "a venir",
-      "detail": "Une correction à la fois, mesurée contre la même référence."
-    },
-    {
-      "n": 8,
-      "titre": "Idées de skills",
-      "statut": "a venir",
-      "detail": "Chaque idée partagée dans la journée est traitée et notée ici."
-    },
-    {
-      "n": 9,
-      "titre": "Bilan de 19 h 30",
-      "statut": "a venir",
-      "detail": "Ce qui marche, ce qui ne marche pas, ce qui reste. Notes dans le coffre."
-    }
+ "titre": "Le chantier du jour",
+ "date": "2026-11-25",
+ "fin": "2026-11-25T19:30:00+01:00",
+ "maj": "2026-11-25T10:15:00+01:00",
+ "etat": "en cours",
+ "resume": "Objectif : apprendre à un gros modèle qui orchestre à confier un maximum de tâches à des petits modèles locaux, sans perdre en qualité, en gardant le contrôle. La journée enchaîne des bancs d'essai, une lecture des erreurs, une veille et des corrections, jusqu'à 19 h 30. Chaque tâche finit classée : déléguable avec contrôle, à l'essai, ou à garder pour le gros modèle.",
+ "etapes": [
+  {
+   "n": 1,
+   "titre": "Cadrer le but et la page de suivi",
+   "statut": "fait",
+   "detail": "But recadré à 10 h : la délégation fiable au local, pas seulement le tri à l'entrée."
+  },
+  {
+   "n": 2,
+   "titre": "Banc 1 : le tri à l'entrée (une piste)",
+   "statut": "en cours",
+   "detail": "Règle fixe, petit modèle, gros modèle, sur 83 demandes. Le mini a fini qwen3:8b ; gemma4:e4b est en cours."
+  },
+  {
+   "n": 3,
+   "titre": "Banc 2 : déléguer par type de tâche",
+   "statut": "a venir",
+   "detail": "Extraction, résumé, reformatage, classement, copie, JSON : chaque tâche × modèle × machine, avec et sans contrôle."
+  },
+  {
+   "n": 4,
+   "titre": "Lire les erreurs, une par une",
+   "statut": "a venir",
+   "detail": "Séparer l'échec visible (on refait) de l'erreur qui passe les contrôles."
+  },
+  {
+   "n": 5,
+   "titre": "Veille : classements publics et code ouvert",
+   "statut": "a venir",
+   "detail": "Ce qui existe déjà pour déléguer au local avec contrôle."
+  },
+  {
+   "n": 6,
+   "titre": "Fiabiliser : consigne apprise, forme imposée, contrôle durci",
+   "statut": "a venir",
+   "detail": "Un seul changement à la fois, comparé au même banc."
+  },
+  {
+   "n": 7,
+   "titre": "Écrire le module de skill « déléguer au local »",
+   "statut": "a venir",
+   "detail": "Catalogue de tâches et protocole de contrôle, sur la branche beta."
+  },
+  {
+   "n": 8,
+   "titre": "Traiter les idées de skills de Lucas",
+   "statut": "a venir",
+   "detail": "Au fil de la journée."
+  },
+  {
+   "n": 9,
+   "titre": "Bilan à 19 h 30 et notes dans le coffre",
+   "statut": "a venir",
+   "detail": "Catalogue final, chiffres sourcés, prochaine étape."
+  }
+ ],
+ "chiffres": [
+  {
+   "valeur": "58 / 60",
+   "libelle": "qwen3:8b trouve la bonne décision d'aiguillage (médiane 3,1 s)",
+   "source": "mini, ~/bancs-journee/b1-qwen3_8b.txt, 25/11 10 h 06"
+  },
+  {
+   "valeur": "11 / 83",
+   "libelle": "demandes réglées par la règle fixe seule, sans aucune erreur",
+   "source": "mini, ~/bancs-journee/b1-regles.txt, 25/11 10 h 02"
+  },
+  {
+   "valeur": "3 / 27",
+   "libelle": "erreurs graves parmi les réponses acceptées (qwen3.5:4b) ; 8 / 89 pour gemma4:e4b",
+   "source": "mini, ~/Apps/stagiaire/porte/, rapport 25/11 04 h 15"
+  },
+  {
+   "valeur": "44 / 44",
+   "libelle": "cas faciles réglés par un script seul",
+   "source": "mini, ~/Apps/stagiaire/porte/, 25/11"
+  },
+  {
+   "valeur": "n/a",
+   "libelle": "part de tâches déléguables sans perte : pas encore mesurée, c'est le banc 2",
+   "source": "à mesurer"
+  }
+ ],
+ "journal": [
+  {
+   "quand": "25/11 10 h 15",
+   "texte": "Recadrage : le but est la délégation fiable au local. La page montre maintenant le parcours d'une tâche, le catalogue et qui teste quoi."
+  },
+  {
+   "quand": "Ce matin",
+   "texte": "La skill orchestrateur 5.0.0-beta.2 est partagée en bêta (branche beta, privée) pour les autres comptes."
+  },
+  {
+   "quand": "Début de matinée",
+   "texte": "Lancement de la boucle de la journée. Machines relevées : mini prêt avec 7 modèles, M3 sans modèle, M1 hors ligne."
+  },
+  {
+   "quand": "9 h 58",
+   "texte": "Page de suivi créée."
+  }
+ ],
+ "idees": [],
+ "machines": [
+  {
+   "nom": "Mac mini",
+   "role": "lance les bancs et en fait une part",
+   "etat": "banc 1 : gemma4:e4b en cours"
+  },
+  {
+   "nom": "MacBook M3 Pro",
+   "role": "mêmes bancs, autres modèles",
+   "etat": "Ollama à installer"
+  },
+  {
+   "nom": "MacBook M1 Pro",
+   "role": "renfort",
+   "etat": "injoignable"
+  },
+  {
+   "nom": "Poste de travail",
+   "role": "lit les résultats, aucun modèle local de jour",
+   "etat": "au repos"
+  }
+ ],
+ "catalogue": {
+  "delegable": [],
+  "a_tester": [
+   "Extraire des champs d'un texte vers du JSON",
+   "Résumer un texte court",
+   "Reformater (dates, listes, tableaux)",
+   "Classer dans une liste fermée",
+   "Copier un passage exact"
   ],
-  "chiffres": [
-    {
-      "valeur": "3 / 27",
-      "libelle": "erreurs graves parmi les réponses acceptées, qwen3.5:4b",
-      "source": "banc de la porte, mini, rapport 04:15 du 25/11"
-    },
-    {
-      "valeur": "6 / 37",
-      "libelle": "idem, qwen3.5:9b",
-      "source": "même banc"
-    },
-    {
-      "valeur": "8 / 89",
-      "libelle": "idem, gemma4:e4b",
-      "source": "même banc"
-    },
-    {
-      "valeur": "44 / 44",
-      "libelle": "cas faciles réglés par un script seul",
-      "source": "même banc"
-    },
-    {
-      "valeur": "76 / 234",
-      "libelle": "demandes réglées par la règle fixe seule",
-      "source": "mesures luclaw"
-    },
-    {
-      "valeur": "49 / 142",
-      "libelle": "LFM3 et Haiku d'accord",
-      "source": "mesures luclaw"
-    }
-  ],
-  "journal": [
-    {
-      "quand": "Ce matin",
-      "texte": "La skill orchestrateur 5.0.0-beta.2 est partagée en bêta (branche beta, privée) pour les autres comptes."
-    },
-    {
-      "quand": "Début de matinée",
-      "texte": "Lancement de la boucle de la journée. Machines relevées : mini prêt avec 7 modèles, M3 sans modèle, M1 hors ligne."
-    },
-    {
-      "quand": "9 h 58",
-      "texte": "Page de suivi créée."
-    }
-  ],
-  "idees": [],
-  "machines": [
-    {
-      "nom": "Mac mini",
-      "role": "banc principal",
-      "etat": "pret"
-    },
-    {
-      "nom": "MacBook M3 Pro",
-      "role": "banc en parallèle",
-      "etat": "a preparer"
-    },
-    {
-      "nom": "MacBook M1 Pro",
-      "role": "renfort si gros modèles",
-      "etat": "hors ligne"
-    },
-    {
-      "nom": "Poste de travail M5",
-      "role": "aucune mesure de jour",
-      "etat": "au repos"
-    }
+  "garder": [
+   "Décider d'une architecture",
+   "Écrire du code qui agit sur le système",
+   "Tout ce qui engage un client"
   ]
+ },
+ "tests": [
+  {
+   "machine": "Mac mini",
+   "modele": "qwen3:8b",
+   "tache": "Banc 1 · tri à l'entrée, avec et sans LFM3",
+   "fait": 60,
+   "total": 60,
+   "resultat": "58/60 justes",
+   "statut": "fait"
+  },
+  {
+   "machine": "Mac mini",
+   "modele": "gemma4:e4b",
+   "tache": "Banc 1 · tri à l'entrée",
+   "fait": 3,
+   "total": 60,
+   "resultat": "",
+   "statut": "en cours"
+  },
+  {
+   "machine": "MacBook M3 Pro",
+   "modele": "à choisir",
+   "tache": "Banc 2 · déléguer par type de tâche",
+   "fait": 0,
+   "total": 1,
+   "resultat": "",
+   "statut": "a venir"
+  },
+  {
+   "machine": "Mac mini",
+   "modele": "plusieurs",
+   "tache": "Banc 2 · déléguer par type de tâche",
+   "fait": 0,
+   "total": 1,
+   "resultat": "",
+   "statut": "a venir"
+  }
+ ]
 }

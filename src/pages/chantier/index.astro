@@ -68,6 +68,8 @@ h2{font-size:24px;letter-spacing:-.02em;margin:46px 0 6px}
 dl.glossaire{display:grid;grid-template-columns:max-content 1fr;gap:8px 18px;margin:0}
 dl.glossaire dt{font-weight:700}dl.glossaire dd{margin:0;color:var(--doux)}
 @media(max-width:560px){dl.glossaire{grid-template-columns:1fr}.etape{grid-template-columns:36px 1fr}.etape .badge{grid-column:2;justify-self:start}}
+.cat{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}.cat h3{margin:0 0 6px;font-size:17px}.cat ul{margin:0;padding-left:18px;color:var(--doux);font-size:15px}.cat .ok h3{color:var(--ok)}.cat .test h3{color:var(--cours)}.cat .non h3{color:var(--attente)}
+.test-l{display:grid;grid-template-columns:150px 1fr auto;gap:10px;align-items:center;margin-bottom:10px}.test-l small{color:var(--doux)}@media(max-width:560px){.test-l{grid-template-columns:1fr}}
 .pied{margin-top:56px;color:var(--doux);font-size:14px}
 </style>
 </head>
@@ -86,18 +88,42 @@ dl.glossaire dt{font-weight:700}dl.glossaire dd{margin:0;color:var(--doux)}
 </header>
 
 <h2>En deux minutes</h2>
-<p class="sous">Le principe, avant le détail : on cherche la meilleure façon de ne payer un gros modèle que pour ce qui le mérite.</p>
+<p class="sous">Ce qu'on cherche aujourd'hui, avant le détail.</p>
 <div class="carte">
-  <p style="margin-top:0"><b>Le problème.</b> Un assistant comme Claude reçoit des centaines de demandes. Certaines sont simples (« quelle heure est-il ? », « range ce fichier ») ; d'autres demandent un vrai raisonnement. Envoyer toutes les demandes au plus gros modèle coûte cher et prend du temps.</p>
-  <p><b>L'idée.</b> Poser à l'entrée une <em>porte</em> : un petit modèle, qui tourne gratuitement sur un Mac de la maison, lit la demande. S'il est sûr de lui, il répond ou il l'aiguille ; sinon, la demande passe au gros modèle.</p>
-  <p style="margin-bottom:0"><b>La question du jour.</b> Jusqu'où peut-on faire confiance à la porte ? Un petit modèle qui se trompe avec assurance est pire qu'un modèle qui hésite. On mesure donc, on lit les erreurs, on corrige, et on recommence.</p>
+  <p style="margin-top:0"><b>Le but.</b> Écrire une <em>skill</em> (un mode d'emploi que Claude lit) qui apprend à un gros modèle chargé d'orchestrer un travail à <b>confier un maximum de tâches à des petits modèles locaux</b>, ceux qui tournent gratuitement sur les Mac de la maison, <b>sans perdre en qualité</b> : le résultat doit être aussi fiable que si un modèle cloud l'avait fait.</p>
+  <p><b>Le vrai problème.</b> Un petit modèle sait faire certaines tâches et en rate d'autres, et il ne s'en rend pas compte. Déléguer sans contrôle, c'est laisser passer des erreurs. Il faut donc savoir <em>quelles</em> tâches confier, <em>comment</em> les formuler pour qu'il réussisse, et <em>comment</em> vérifier ce qu'il rend.</p>
+  <p style="margin-bottom:0"><b>La méthode.</b> Des bancs d'essai répétés (mêmes tâches, plusieurs modèles, plusieurs machines), une lecture des erreurs, une veille sur ce qui existe, une correction, et on mesure encore. Chaque tâche finit classée : déléguable avec contrôle, à tester, ou à garder pour le gros modèle.</p>
+</div>
+
+<h2>Comment une tâche est déléguée</h2>
+<p class="sous">Le parcours que la skill doit apprendre au gros modèle. Chaque case est une chose qu'on mesure.</p>
+<div class="carte">
+<svg class="schema" viewBox="0 0 860 340" role="img" aria-labelledby="t2 d2">
+<title id="t2">Le parcours d'une tâche déléguée</title><desc id="d2">Le gros modèle reçoit une tâche, vérifie qu'elle est déléguable, prépare un paquet, un modèle local la fait, un contrôle mécanique puis une relecture par échantillon la valident ; sinon le gros modèle la refait.</desc>
+<defs><marker id="g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path class="tete-fl" d="M0 0 10 5 0 10z"/></marker></defs>
+<rect class="neutre" x="8" y="60" width="118" height="92" rx="14"/><text x="67" y="96" text-anchor="middle">Gros modèle</text><text class="p" x="67" y="116" text-anchor="middle">reçoit la tâche</text><text class="p" x="67" y="133" text-anchor="middle">(l'orchestrateur)</text>
+<rect class="bloc" x="152" y="60" width="118" height="92" rx="14"/><text x="211" y="92" text-anchor="middle">1. Trier</text><text class="p" x="211" y="112" text-anchor="middle">est-elle dans</text><text class="p" x="211" y="129" text-anchor="middle">le catalogue ?</text>
+<rect class="bloc" x="296" y="60" width="118" height="92" rx="14"/><text x="355" y="92" text-anchor="middle">2. Préparer</text><text class="p" x="355" y="112" text-anchor="middle">consigne apprise,</text><text class="p" x="355" y="129" text-anchor="middle">forme imposée</text>
+<rect class="bloc" x="440" y="60" width="118" height="92" rx="14"/><text x="499" y="92" text-anchor="middle">3. Faire</text><text class="p" x="499" y="112" text-anchor="middle">modèle local</text><text class="p" x="499" y="129" text-anchor="middle">mini ou M3</text>
+<rect class="bloc" x="584" y="60" width="118" height="92" rx="14"/><text x="643" y="92" text-anchor="middle">4. Contrôler</text><text class="p" x="643" y="112" text-anchor="middle">forme, chiffres,</text><text class="p" x="643" y="129" text-anchor="middle">source retrouvée</text>
+<rect class="bloc" x="728" y="60" width="124" height="92" rx="14"/><text x="790" y="92" text-anchor="middle">5. Relire</text><text class="p" x="790" y="112" text-anchor="middle">un échantillon,</text><text class="p" x="790" y="129" text-anchor="middle">par le gros modèle</text>
+<path class="fl" marker-end="url(#g)" d="M126 106h24"/><path class="fl" marker-end="url(#g)" d="M270 106h24"/><path class="fl" marker-end="url(#g)" d="M414 106h24"/><path class="fl" marker-end="url(#g)" d="M558 106h24"/><path class="fl" marker-end="url(#g)" d="M702 106h24"/>
+<rect class="ok" x="640" y="188" width="212" height="40" rx="12" style="fill:var(--carte)"/><text x="746" y="213" text-anchor="middle">Accepté : zéro jeton cloud</text>
+<path class="ok" d="M790 152v36"/>
+<rect class="neutre" x="152" y="188" width="262" height="40" rx="12" stroke-dasharray="6 5"/><text x="283" y="213" text-anchor="middle">Pas dans le catalogue : le gros modèle fait</text>
+<path class="fl" marker-end="url(#g)" stroke-dasharray="5 5" d="M211 152v34"/>
+<rect class="neutre" x="440" y="250" width="300" height="40" rx="12" stroke-dasharray="6 5"/><text x="590" y="275" text-anchor="middle">Contrôle raté : le gros modèle refait</text>
+<path class="fl" marker-end="url(#g)" stroke-dasharray="5 5" d="M643 152v10h-60v86"/>
+<rect x="8" y="304" width="844" height="28" rx="10" class="neutre"/><text class="p" x="430" y="323" text-anchor="middle">On mesure à chaque case : taux de réussite, erreurs laissées passer, jetons économisés, temps.</text>
+</svg>
+<p class="lire"><b>À lire :</b> le danger n'est pas l'échec visible (on refait), c'est l'erreur qui passe tous les contrôles. Toute la journée sert à réduire cette part, en choisissant mieux les tâches et en durcissant les contrôles.</p>
 </div>
 
 <h2>La boucle de la journée</h2>
 <p class="sous">Un tour dure une à deux heures. Chaque tour part de la même référence pour que les résultats se comparent.</p>
 <div class="carte">
 <svg class="schema" viewBox="0 0 860 250" role="img" aria-labelledby="t1 d1">
-<title id="t1">La boucle de la journée</title><desc id="d1">Cinq étapes en cercle : banc, interprétation, veille, fiabilisation, retour au banc.</desc>
+<title id="t1">La boucle de la journée</title><desc id="d1">Cinq étapes : banc, lecture des erreurs, veille, correction, retour au même banc.</desc>
 <defs><marker id="f" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path class="tete-fl" d="M0 0 10 5 0 10z"/></marker></defs>
 <g>
 <rect class="bloc" x="10" y="70" width="140" height="84" rx="16"/><text x="80" y="104" text-anchor="middle">1. Banc</text><text class="p" x="80" y="126" text-anchor="middle">on mesure</text>
@@ -113,43 +139,49 @@ dl.glossaire dt{font-weight:700}dl.glossaire dd{margin:0;color:var(--doux)}
 <p class="lire"><b>À lire :</b> chaque flèche est une décision écrite. Si la correction n'améliore pas le même banc, elle est jetée et la raison est notée.</p>
 </div>
 
-<h2>L'architecture mise à l'épreuve</h2>
-<p class="sous">Celle qu'on teste aujourd'hui : trois filtres, du moins cher au plus cher. Ce n'est pas un résultat, c'est l'hypothèse que le banc doit confirmer ou démentir.</p>
-<div class="carte">
-<svg class="schema" viewBox="0 0 860 330" role="img" aria-labelledby="t2 d2">
-<title id="t2">Les trois filtres de la porte</title><desc id="d2">Une demande passe d'abord par une règle fixe, puis par un petit modèle local, puis par le gros modèle si aucun des deux n'est sûr.</desc>
-<defs><marker id="g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path class="tete-fl" d="M0 0 10 5 0 10z"/></marker></defs>
-<rect class="neutre" x="10" y="120" width="130" height="80" rx="16"/><text x="75" y="156" text-anchor="middle">Demande</text><text class="p" x="75" y="177" text-anchor="middle">arrive</text>
-<path class="fl" marker-end="url(#g)" d="M140 160h40"/>
-<rect class="bloc" x="182" y="100" width="170" height="120" rx="16"/><text x="267" y="140" text-anchor="middle">1. Règle fixe</text><text class="p" x="267" y="162" text-anchor="middle">un script, gratuit,</text><text class="p" x="267" y="180" text-anchor="middle">instantané</text>
-<path class="fl" marker-end="url(#g)" d="M352 160h40"/>
-<rect class="bloc" x="394" y="100" width="190" height="120" rx="16"/><text x="489" y="140" text-anchor="middle">2. Petit modèle local</text><text class="p" x="489" y="162" text-anchor="middle">sur un Mac de la maison,</text><text class="p" x="489" y="180" text-anchor="middle">gratuit, un peu lent</text>
-<path class="fl" marker-end="url(#g)" d="M584 160h40"/>
-<rect class="bloc" x="626" y="100" width="224" height="120" rx="16"/><text x="738" y="140" text-anchor="middle">3. Gros modèle</text><text class="p" x="738" y="162" text-anchor="middle">Claude, payant,</text><text class="p" x="738" y="180" text-anchor="middle">pour ce qui est difficile</text>
-<path class="ok" d="M267 100V58"/>
-<rect class="ok" x="190" y="18" width="150" height="40" rx="12" style="fill:var(--carte)"/><text x="265" y="43" text-anchor="middle">Réglé ici</text>
-<rect class="ok" x="414" y="18" width="150" height="40" rx="12" style="fill:var(--carte)"/><text x="489" y="43" text-anchor="middle">Réglé ici</text>
-<path class="ok" d="M489 100V58"/>
-<rect x="10" y="262" width="840" height="52" rx="14" class="neutre"/><text x="430" y="285" text-anchor="middle">Le contrôle : une réponse « sûre » mais fausse est le vrai danger.</text><text class="p" x="430" y="303" text-anchor="middle">Le banc compte donc les erreurs commises avec assurance, pas seulement le score moyen.</text>
-</svg>
-<p class="lire"><b>À lire :</b> plus une demande est réglée tôt (à gauche), moins elle coûte. Le seuil de 0,99 veut dire : le petit modèle ne répond que s'il est sûr à 99 %, sinon il laisse passer.</p>
-</div>
+<h2>Quelles tâches peut-on confier ?</h2>
+<p class="sous">Le catalogue se remplit au fil des bancs. Une tâche entre dans une colonne seulement après mesure.</p>
+<div class="cat" id="catalogue"></div>
 
-<h2>Les machines au travail</h2>
-<p class="sous">Les mesures tournent sur des Mac qui ne servent pas à travailler, pour ne jamais ralentir le poste principal.</p>
+<h2>Qui teste quoi, sur quelle machine</h2>
+<p class="sous">Les essais tournent sur des Mac qui ne servent pas à travailler, pour ne jamais ralentir le poste principal. Ce tableau se met à jour avec l'avancement réel.</p>
 <div class="carte">
-<svg class="schema" viewBox="0 0 860 220" role="img" aria-labelledby="t3 d3">
-<title id="t3">Répartition du banc sur les machines</title><desc id="d3">Le Mac mini est le chef d'orchestre, le MacBook M3 reçoit une partie du banc, le M1 est en renfort, le poste de travail n'est pas utilisé de jour.</desc>
+<svg class="schema" viewBox="0 0 860 240" role="img" aria-labelledby="t3 d3">
+<title id="t3">Répartition des essais sur les machines</title><desc id="d3">Le Mac mini lance les bancs et en fait une partie, le MacBook M3 fait une autre partie, le M1 est en renfort, le poste de travail n'est pas utilisé de jour. Les résultats reviennent au poste de travail qui les lit.</desc>
 <defs><marker id="h" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path class="tete-fl" d="M0 0 10 5 0 10z"/></marker></defs>
-<rect class="bloc" x="330" y="14" width="200" height="74" rx="16"/><text x="430" y="46" text-anchor="middle">Mac mini</text><text class="p" x="430" y="68" text-anchor="middle">chef d'orchestre + banc</text>
-<rect class="bloc" x="40" y="140" width="220" height="66" rx="16"/><text x="150" y="168" text-anchor="middle">MacBook M3 Pro</text><text class="p" x="150" y="188" text-anchor="middle">même banc, autre moitié</text>
-<rect class="neutre" x="320" y="140" width="220" height="66" rx="16" stroke-dasharray="6 5"/><text x="430" y="168" text-anchor="middle">MacBook M1 Pro</text><text class="p" x="430" y="188" text-anchor="middle">renfort, éteint pour l'instant</text>
-<rect class="neutre" x="600" y="140" width="220" height="66" rx="16"/><text x="710" y="168" text-anchor="middle">Poste de travail</text><text class="p" x="710" y="188" text-anchor="middle">aucune mesure de jour</text>
-<path class="fl" marker-end="url(#h)" d="M380 88 150 138"/><path class="fl" marker-end="url(#h)" stroke-dasharray="5 5" d="M430 88v50"/>
+<rect class="bloc" x="330" y="10" width="200" height="74" rx="16"/><text x="430" y="42" text-anchor="middle">Mac mini</text><text class="p" x="430" y="64" text-anchor="middle">lance les bancs, en fait une part</text>
+<rect class="bloc" x="40" y="130" width="220" height="66" rx="16"/><text x="150" y="158" text-anchor="middle">MacBook M3 Pro</text><text class="p" x="150" y="178" text-anchor="middle">autres modèles, même banc</text>
+<rect class="neutre" x="320" y="130" width="220" height="66" rx="16" stroke-dasharray="6 5"/><text x="430" y="158" text-anchor="middle">MacBook M1 Pro</text><text class="p" x="430" y="178" text-anchor="middle">renfort, éteint pour l'instant</text>
+<rect class="neutre" x="600" y="130" width="220" height="66" rx="16"/><text x="710" y="158" text-anchor="middle">Poste de travail</text><text class="p" x="710" y="178" text-anchor="middle">lit les résultats, ne calcule pas</text>
+<path class="fl" marker-end="url(#h)" d="M380 84 150 128"/><path class="fl" marker-end="url(#h)" stroke-dasharray="5 5" d="M430 84v44"/><path class="fl" marker-end="url(#h)" d="M530 60Q710 60 710 128"/>
+<text class="p" x="430" y="226" text-anchor="middle">flèches : les paquets partent vers les machines ; les résultats remontent au poste de travail</text>
 </svg>
-<p class="lire"><b>À lire :</b> le chef d'orchestre découpe le banc en paquets et les envoie aux machines prêtes ; chacune renvoie ses résultats, qui sont rassemblés ensuite.</p>
 </div>
 <div class="machines" id="machines" style="margin-top:12px"></div>
+
+<h2>Le flux : les essais en cours</h2>
+<p class="sous">Chaque ligne est un essai réel : sur quelle machine, quel modèle, quelle tâche, où il en est.</p>
+<div id="tests"></div>
+
+<h2>Une piste parmi d'autres : la porte à l'entrée</h2>
+<p class="sous">Faire trier chaque demande par un petit modèle avant le gros modèle. C'est une des façons d'utiliser le local, pas le but. Elle se mesure ici (banc 1) et ses leçons servent la skill.</p>
+<div class="carte">
+<svg class="schema" viewBox="0 0 860 330" role="img" aria-labelledby="t4 d4">
+<title id="t4">Les trois filtres de la porte</title><desc id="d4">Une demande passe d'abord par une règle fixe, puis par un petit modèle local, puis par le gros modèle si aucun des deux n'est sûr.</desc>
+<defs><marker id="g2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path class="tete-fl" d="M0 0 10 5 0 10z"/></marker></defs>
+<rect class="neutre" x="10" y="120" width="130" height="80" rx="16"/><text x="75" y="156" text-anchor="middle">Demande</text><text class="p" x="75" y="177" text-anchor="middle">arrive</text>
+<path class="fl" marker-end="url(#g2)" d="M140 160h40"/>
+<rect class="bloc" x="182" y="100" width="170" height="120" rx="16"/><text x="267" y="140" text-anchor="middle">1. Règle fixe</text><text class="p" x="267" y="162" text-anchor="middle">un script, gratuit,</text><text class="p" x="267" y="180" text-anchor="middle">instantané</text>
+<path class="fl" marker-end="url(#g2)" d="M352 160h40"/>
+<rect class="bloc" x="394" y="100" width="190" height="120" rx="16"/><text x="489" y="140" text-anchor="middle">2. Petit modèle local</text><text class="p" x="489" y="162" text-anchor="middle">sur un Mac de la maison,</text><text class="p" x="489" y="180" text-anchor="middle">gratuit, un peu lent</text>
+<path class="fl" marker-end="url(#g2)" d="M584 160h40"/>
+<rect class="bloc" x="626" y="100" width="224" height="120" rx="16"/><text x="738" y="140" text-anchor="middle">3. Gros modèle</text><text class="p" x="738" y="162" text-anchor="middle">Claude, payant,</text><text class="p" x="738" y="180" text-anchor="middle">pour ce qui est difficile</text>
+<path class="ok" d="M267 100V58"/><rect class="ok" x="190" y="18" width="150" height="40" rx="12" style="fill:var(--carte)"/><text x="265" y="43" text-anchor="middle">Réglé ici</text>
+<path class="ok" d="M489 100V58"/><rect class="ok" x="414" y="18" width="150" height="40" rx="12" style="fill:var(--carte)"/><text x="489" y="43" text-anchor="middle">Réglé ici</text>
+<rect x="10" y="262" width="840" height="52" rx="14" class="neutre"/><text x="430" y="285" text-anchor="middle">Une réponse « sûre » mais fausse est le vrai danger.</text><text class="p" x="430" y="303" text-anchor="middle">Le banc compte les erreurs commises avec assurance, pas seulement le score moyen.</text>
+</svg>
+<p class="lire"><b>À lire :</b> le seuil de 0,99 veut dire : le petit modèle ne répond que s'il est sûr à 99 %, sinon il laisse passer.</p>
+</div>
 
 <h2>Les étapes</h2>
 <p class="sous">Mises à jour au fil de la journée. Une étape est « faite » quand son résultat est vérifié, pas quand elle est lancée.</p>
@@ -170,7 +202,10 @@ dl.glossaire dt{font-weight:700}dl.glossaire dd{margin:0;color:var(--doux)}
 <h2>Le vocabulaire</h2>
 <div class="carte"><dl class="glossaire">
 <dt>Banc</dt><dd>Une série de demandes types qu'on fait passer à un modèle pour noter ses réponses, toujours les mêmes, afin de comparer.</dd>
-<dt>Porte</dt><dd>Le filtre placé à l'entrée : il décide qui répond (script, petit modèle ou gros modèle).</dd>
+<dt>Déléguer</dt><dd>Confier une tâche à un petit modèle local au lieu de la faire faire par le gros modèle.</dd>
+<dt>Orchestrateur</dt><dd>Le gros modèle qui découpe un travail et décide qui fait quoi.</dd>
+<dt>Contrôle mécanique</dt><dd>Une vérification faite par un script, sans IA : la forme est bonne, les chiffres et les citations se retrouvent dans la source.</dd>
+<dt>Porte</dt><dd>Un filtre placé à l'entrée : il décide qui répond (script, petit modèle ou gros modèle).</dd>
 <dt>Modèle local</dt><dd>Un modèle d'IA qui tourne sur un de nos Mac, sans internet et sans facture ; plus petit, donc moins sûr.</dd>
 <dt>Ollama</dt><dd>Le programme qui fait tourner ces modèles locaux.</dd>
 <dt>Seuil</dt><dd>Le niveau d'assurance exigé avant de laisser le petit modèle répondre ; 0,99 = sûr à 99 %.</dd>
@@ -206,6 +241,14 @@ dl.glossaire dt{font-weight:700}dl.glossaire dd{margin:0;color:var(--doux)}
     $('machines').innerHTML=D.machines.map(function(m){
       return '<div class="carte machine"><b><span class="pastille" data-e="'+esc(m.etat)+'"></span>'+esc(m.nom)+'</b><span class="vide" style="font-style:normal;color:var(--doux)">'+esc(m.role)+' · '+esc(m.etat)+'</span></div>';
     }).join('');
+    var C=D.catalogue||{};
+    $('catalogue').innerHTML=[['ok','Déléguable avec contrôle','delegable'],['test','À l\'essai','a_tester'],['non','Pour le gros modèle','garder']].map(function(k){
+      var a=C[k[2]]||[];return '<div class="carte '+k[0]+'"><h3>'+k[1]+'</h3>'+(a.length?'<ul>'+a.map(function(x){return '<li>'+esc(x)+'</li>'}).join('')+'</ul>':'<p class="vide" style="margin:0">Rien de mesuré pour l\'instant.</p>')+'</div>';
+    }).join('');
+    $('tests').innerHTML=(D.tests||[]).length?(D.tests||[]).map(function(x){
+      var pc=x.total?Math.round(100*x.fait/x.total):0;
+      return '<div class="carte test-l"><div><b>'+esc(x.machine)+'</b><br><small>'+esc(x.modele)+'</small></div><div><span>'+esc(x.tache)+'</span><div class="barre"><i style="width:'+pc+'%"></i></div><small>'+esc(x.fait)+' / '+esc(x.total)+(x.resultat?' · '+esc(x.resultat):'')+'</small></div><span class="badge" data-s="'+esc(x.statut)+'">'+esc(x.statut==='a venir'?'à venir':x.statut)+'</span></div>';
+    }).join(''):'<p class="vide">Aucun essai en cours.</p>';
     $('journal').innerHTML=D.journal.map(function(j){return '<li><time>'+esc(j.quand)+'</time>'+esc(j.texte)+'</li>'}).join('');
     $('idees').innerHTML=D.idees.length?'<div class="chiffres">'+D.idees.map(function(i){
       return '<div class="carte chiffre"><b style="font-size:18px;color:var(--encre)">'+esc(i.titre)+'</b><p>'+esc(i.texte)+'</p><small>'+esc(i.suite||'')+'</small></div>';
