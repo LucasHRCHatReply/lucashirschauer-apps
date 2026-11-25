@@ -2,7 +2,7 @@
  "titre": "Le chantier du jour",
  "date": "2026-11-25",
  "fin": "2026-11-25T19:30:00+01:00",
- "maj": "2026-11-25T10:22:00+01:00",
+ "maj": "2026-11-25T10:30:00+01:00",
  "etat": "en cours",
  "resume": "Objectif : apprendre à un gros modèle qui orchestre à confier un maximum de tâches à des petits modèles locaux, sans perdre en qualité, en gardant le contrôle. La journée enchaîne des bancs d'essai, une lecture des erreurs, une veille et des corrections, jusqu'à 19 h 30. Chaque tâche finit classée : déléguable avec contrôle, à l'essai, ou à garder pour le gros modèle.",
  "etapes": [
@@ -64,8 +64,8 @@
  "chiffres": [
   {
    "valeur": "58 / 60",
-   "libelle": "qwen3:8b trouve la bonne décision d'aiguillage (médiane 3,1 s)",
-   "source": "mini, ~/bancs-journee/b1-qwen3_8b.txt, 25/11 10 h 06"
+   "libelle": "qwen3:8b juste sur l'aiguillage, avec ou sans LFM3 (médiane 3,1 s) ; gemma4:e4b 51/60 avec LFM3, 54/60 sans (médiane 1,1 s)",
+   "source": "mini, ~/bancs-journee/b1-*.txt, 25/11 10 h 20"
   },
   {
    "valeur": "11 / 83",
@@ -89,6 +89,10 @@
   }
  ],
  "journal": [
+  {
+   "quand": "25/11 10 h 30",
+   "texte": "Banc 1 interprété : qwen3:8b est plus juste (58/60) mais trois fois plus lent que gemma4:e4b ; LFM3 n'apporte rien de mesurable ici. Le tri à l'entrée reste une piste annexe. Banc 2 en cours sur le mini."
+  },
   {
    "quand": "25/11 10 h 22",
    "texte": "Banc 1 fini : qwen3:8b 58/60, gemma4:e4b 54/60. Banc 2 lancé sur le mini (6 types de tâches × 5 modèles). Premier essai : sur la somme de montants, qwen3:8b se trompe 2 fois sur 2 en passant le contrôle de forme. Piste : le contrôle doit recalculer la somme par script."
