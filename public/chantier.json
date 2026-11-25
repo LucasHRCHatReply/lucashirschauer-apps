@@ -1,0 +1,133 @@
+{
+  "titre": "Le chantier du jour",
+  "date": "2026-11-25",
+  "fin": "2026-11-25T19:30:00+01:00",
+  "maj": "2026-11-25T09:58:56+01:00",
+  "etat": "en cours",
+  "resume": "Chercher la meilleure façon de faire trier le travail par de petits modèles qui tournent sur les Mac de la maison, mesurer, comprendre, corriger, mesurer encore, jusqu'à 19 h 30.",
+  "etapes": [
+    {
+      "n": 1,
+      "titre": "Cadrer la boucle",
+      "statut": "fait",
+      "detail": "Plan, garde-fous, fichier d'état, accès aux machines relevé (mini et M3 oui, M1 éteint)."
+    },
+    {
+      "n": 2,
+      "titre": "Page de suivi",
+      "statut": "en cours",
+      "detail": "Cette page. Elle lit un seul fichier de données, mis à jour au fil de la journée."
+    },
+    {
+      "n": 3,
+      "titre": "Banc 1 : le tri fermé",
+      "statut": "a venir",
+      "detail": "Sur le Mac mini : règle fixe seule, puis petit modèle au seuil 0,99, comparés à Claude Haiku, sur les 234 demandes du corpus d'intentions."
+    },
+    {
+      "n": 4,
+      "titre": "Banc en parallèle sur le M3",
+      "statut": "a venir",
+      "detail": "Ollama lancé sur le M3, modèles copiés depuis le mini : même banc, moitié du temps."
+    },
+    {
+      "n": 5,
+      "titre": "Interpréter",
+      "statut": "a venir",
+      "detail": "Qui se trompe, sur quoi, avec quelle assurance : on lit les erreurs, pas seulement le score."
+    },
+    {
+      "n": 6,
+      "titre": "Veille",
+      "statut": "a venir",
+      "detail": "Classements publics et code des projets sérieux avant d'inventer un mécanisme."
+    },
+    {
+      "n": 7,
+      "titre": "Fiabiliser, puis nouveau banc",
+      "statut": "a venir",
+      "detail": "Une correction à la fois, mesurée contre la même référence."
+    },
+    {
+      "n": 8,
+      "titre": "Idées de skills",
+      "statut": "a venir",
+      "detail": "Chaque idée partagée dans la journée est traitée et notée ici."
+    },
+    {
+      "n": 9,
+      "titre": "Bilan de 19 h 30",
+      "statut": "a venir",
+      "detail": "Ce qui marche, ce qui ne marche pas, ce qui reste. Notes dans le coffre."
+    }
+  ],
+  "chiffres": [
+    {
+      "valeur": "3 / 27",
+      "libelle": "erreurs graves parmi les réponses acceptées, qwen3.5:4b",
+      "source": "banc de la porte, mini, rapport 04:15 du 25/11"
+    },
+    {
+      "valeur": "6 / 37",
+      "libelle": "idem, qwen3.5:9b",
+      "source": "même banc"
+    },
+    {
+      "valeur": "8 / 89",
+      "libelle": "idem, gemma4:e4b",
+      "source": "même banc"
+    },
+    {
+      "valeur": "44 / 44",
+      "libelle": "cas faciles réglés par un script seul",
+      "source": "même banc"
+    },
+    {
+      "valeur": "76 / 234",
+      "libelle": "demandes réglées par la règle fixe seule",
+      "source": "mesures luclaw"
+    },
+    {
+      "valeur": "49 / 142",
+      "libelle": "LFM3 et Haiku d'accord",
+      "source": "mesures luclaw"
+    }
+  ],
+  "journal": [
+    {
+      "quand": "Ce matin",
+      "texte": "La skill orchestrateur 5.0.0-beta.2 est partagée en bêta (branche beta, privée) pour les autres comptes."
+    },
+    {
+      "quand": "Début de matinée",
+      "texte": "Lancement de la boucle de la journée. Machines relevées : mini prêt avec 7 modèles, M3 sans modèle, M1 hors ligne."
+    },
+    {
+      "quand": "9 h 58",
+      "texte": "Page de suivi créée."
+    }
+  ],
+  "idees": [],
+  "machines": [
+    {
+      "nom": "Mac mini",
+      "role": "banc principal",
+      "etat": "pret"
+    },
+    {
+      "nom": "MacBook M3 Pro",
+      "role": "banc en parallèle",
+      "etat": "a preparer"
+    },
+    {
+      "nom": "MacBook M1 Pro",
+      "role": "renfort si gros modèles",
+      "etat": "hors ligne"
+    },
+    {
+      "nom": "Poste de travail M5",
+      "role": "aucune mesure de jour",
+      "etat": "au repos"
+    }
+  ]
+}

@@ -1,0 +1,228 @@
+---
+// Page de suivi d'un chantier : une page « headless », sans contenu écrit dans la page.
+// Tout ce qui bouge vient de public/chantier.json ; la page le relit toute seule toutes les 60 secondes.
+// Les schémas, eux, expliquent le fonctionnement et ne changent pas.
+import donnees from '../../../public/chantier.json';
+---
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Chantier du jour</title>
+<meta name="description" content="Suivi en direct du chantier de la journée : ce qu'on construit, pourquoi, où on en est.">
+<meta name="color-scheme" content="light dark">
+<meta name="robots" content="noindex">
+<link rel="icon" href="/assets/pince-icon.png?v=20261028n">
+<style is:global>
+:root{--fond:#f6f7fb;--carte:#fff;--encre:#14161f;--doux:#5b6070;--trait:#d9dce6;--accent:#0067b3;--tinte:rgba(0,103,179,.09);--ok:#12724f;--cours:#b25e00;--attente:#6b7080;--alerte:#b3261e}
+@media (prefers-color-scheme:dark){:root{--fond:#0d0e13;--carte:#16181f;--encre:#eef0f7;--doux:#a2a7b8;--trait:#2a2d38;--accent:#4db3ff;--tinte:rgba(77,179,255,.13);--ok:#4ad8a6;--cours:#ffb454;--attente:#9399ab;--alerte:#ff8a80}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--fond);color:var(--encre);font:16px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
+main{max-width:960px;margin:0 auto;padding:0 16px 64px}
+a{color:var(--accent)}
+.tete{padding:36px 0 8px}
+.tete small{color:var(--doux);letter-spacing:.04em;text-transform:uppercase;font-size:13px}
+h1{font-size:clamp(30px,5vw,48px);line-height:1.08;letter-spacing:-.03em;margin:6px 0 10px}
+.resume{font-size:19px;max-width:62ch;color:var(--encre)}
+.bandeau{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin:22px 0}
+.tuile{background:var(--carte);border:1px solid var(--trait);border-radius:18px;padding:14px 16px}
+.tuile b{display:block;font-size:30px;letter-spacing:-.02em;line-height:1.15}
+.tuile span{color:var(--doux);font-size:14px}
+.barre{height:10px;border-radius:99px;background:var(--trait);overflow:hidden;margin-top:8px}
+.barre i{display:block;height:100%;background:var(--accent);border-radius:99px;transition:width .6s}
+h2{font-size:24px;letter-spacing:-.02em;margin:46px 0 6px}
+.sous{color:var(--doux);margin:0 0 16px;max-width:66ch}
+.carte{background:var(--carte);border:1px solid var(--trait);border-radius:20px;padding:18px}
+.schema{width:100%;height:auto;display:block}
+.schema text{fill:var(--encre);font:600 14px -apple-system,BlinkMacSystemFont,sans-serif}
+.schema .p{fill:var(--doux);font-weight:400;font-size:12.5px}
+.schema .bloc{fill:var(--tinte);stroke:var(--accent);stroke-width:1.5}
+.schema .neutre{fill:var(--carte);stroke:var(--trait);stroke-width:1.5}
+.schema .ok{fill:none;stroke:var(--ok);stroke-width:1.8}
+.schema .fl{stroke:var(--doux);stroke-width:1.8;fill:none}
+.schema .tete-fl{fill:var(--doux)}
+.lire{margin-top:12px;color:var(--doux);font-size:15px}
+.lire b{color:var(--encre)}
+.etapes{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.etape{display:grid;grid-template-columns:44px 1fr auto;gap:12px;align-items:start;background:var(--carte);border:1px solid var(--trait);border-radius:16px;padding:12px 14px}
+.etape .n{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;font-weight:700;background:var(--tinte);color:var(--accent)}
+.etape[data-s="fait"] .n{background:var(--ok);color:#fff}
+.etape[data-s="en cours"] .n{background:var(--cours);color:#fff}
+.etape h3{font-size:17px;margin:0}
+.etape p{margin:2px 0 0;color:var(--doux);font-size:15px}
+.badge{font-size:13px;font-weight:600;padding:3px 10px;border-radius:99px;border:1px solid currentColor;white-space:nowrap}
+.badge[data-s="fait"]{color:var(--ok)}.badge[data-s="en cours"]{color:var(--cours)}.badge[data-s="a venir"]{color:var(--attente)}.badge[data-s="bloque"]{color:var(--alerte)}
+.chiffres{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px}
+.chiffre b{font-size:28px;letter-spacing:-.02em;color:var(--accent)}
+.chiffre p{margin:2px 0 4px}.chiffre small{color:var(--doux)}
+.machines{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.machine b{display:block}
+.pastille{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;background:var(--attente)}
+.pastille[data-e="pret"]{background:var(--ok)}.pastille[data-e="en marche"]{background:var(--cours)}.pastille[data-e="hors ligne"]{background:var(--alerte)}
+.journal{list-style:none;margin:0;padding:0 0 0 18px;border-left:2px solid var(--trait)}
+.journal li{position:relative;margin:0 0 14px;padding-left:14px}
+.journal li::before{content:"";position:absolute;left:-25px;top:7px;width:12px;height:12px;border-radius:50%;background:var(--accent);border:2px solid var(--fond)}
+.journal time{display:block;font-size:13px;color:var(--doux);font-weight:600}
+.vide{color:var(--doux);font-style:italic}
+dl.glossaire{display:grid;grid-template-columns:max-content 1fr;gap:8px 18px;margin:0}
+dl.glossaire dt{font-weight:700}dl.glossaire dd{margin:0;color:var(--doux)}
+@media(max-width:560px){dl.glossaire{grid-template-columns:1fr}.etape{grid-template-columns:36px 1fr}.etape .badge{grid-column:2;justify-self:start}}
+.pied{margin-top:56px;color:var(--doux);font-size:14px}
+</style>
+</head>
+<body>
+<main>
+<header class="tete">
+  <small id="date">Chantier du jour</small>
+  <h1 id="titre">Le chantier du jour</h1>
+  <p class="resume" id="resume"></p>
+  <div class="bandeau">
+    <div class="tuile"><b id="etat">…</b><span>État du chantier</span></div>
+    <div class="tuile"><b id="reste">…</b><span>Avant la fin (19 h 30)</span></div>
+    <div class="tuile"><b id="avance">…</b><span>Étapes faites<div class="barre"><i id="jauge" style="width:0"></i></div></span></div>
+    <div class="tuile"><b id="maj">…</b><span>Dernière mise à jour</span></div>
+  </div>
+</header>
+
+<h2>En deux minutes</h2>
+<p class="sous">Le principe, avant le détail : on cherche la meilleure façon de ne payer un gros modèle que pour ce qui le mérite.</p>
+<div class="carte">
+  <p style="margin-top:0"><b>Le problème.</b> Un assistant comme Claude reçoit des centaines de demandes. Certaines sont simples (« quelle heure est-il ? », « range ce fichier ») ; d'autres demandent un vrai raisonnement. Envoyer toutes les demandes au plus gros modèle coûte cher et prend du temps.</p>
+  <p><b>L'idée.</b> Poser à l'entrée une <em>porte</em> : un petit modèle, qui tourne gratuitement sur un Mac de la maison, lit la demande. S'il est sûr de lui, il répond ou il l'aiguille ; sinon, la demande passe au gros modèle.</p>
+  <p style="margin-bottom:0"><b>La question du jour.</b> Jusqu'où peut-on faire confiance à la porte ? Un petit modèle qui se trompe avec assurance est pire qu'un modèle qui hésite. On mesure donc, on lit les erreurs, on corrige, et on recommence.</p>
+</div>
+
+<h2>La boucle de la journée</h2>
+<p class="sous">Un tour dure une à deux heures. Chaque tour part de la même référence pour que les résultats se comparent.</p>
+<div class="carte">
+<svg class="schema" viewBox="0 0 860 250" role="img" aria-labelledby="t1 d1">
+<title id="t1">La boucle de la journée</title><desc id="d1">Cinq étapes en cercle : banc, interprétation, veille, fiabilisation, retour au banc.</desc>
+<defs><marker id="f" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path class="tete-fl" d="M0 0 10 5 0 10z"/></marker></defs>
+<g>
+<rect class="bloc" x="10" y="70" width="140" height="84" rx="16"/><text x="80" y="104" text-anchor="middle">1. Banc</text><text class="p" x="80" y="126" text-anchor="middle">on mesure</text>
+<rect class="bloc" x="190" y="70" width="140" height="84" rx="16"/><text x="260" y="104" text-anchor="middle">2. Lecture</text><text class="p" x="260" y="126" text-anchor="middle">on lit les erreurs</text>
+<rect class="bloc" x="370" y="70" width="140" height="84" rx="16"/><text x="440" y="104" text-anchor="middle">3. Veille</text><text class="p" x="440" y="126" text-anchor="middle">ce qui existe déjà</text>
+<rect class="bloc" x="550" y="70" width="140" height="84" rx="16"/><text x="620" y="104" text-anchor="middle">4. Correction</text><text class="p" x="620" y="126" text-anchor="middle">un seul changement</text>
+<rect class="ok" x="730" y="70" width="120" height="84" rx="16"/><text x="790" y="104" text-anchor="middle">Même banc</text><text class="p" x="790" y="126" text-anchor="middle">on compare</text>
+</g>
+<path class="fl" marker-end="url(#f)" d="M150 112h38"/><path class="fl" marker-end="url(#f)" d="M330 112h38"/><path class="fl" marker-end="url(#f)" d="M510 112h38"/><path class="fl" marker-end="url(#f)" d="M690 112h38"/>
+<path class="fl" marker-end="url(#f)" d="M790 154v52H80v-50"/>
+<text class="p" x="430" y="228" text-anchor="middle">et on recommence, jusqu'à 19 h 30</text>
+</svg>
+<p class="lire"><b>À lire :</b> chaque flèche est une décision écrite. Si la correction n'améliore pas le même banc, elle est jetée et la raison est notée.</p>
+</div>
+
+<h2>L'architecture mise à l'épreuve</h2>
+<p class="sous">Celle qu'on teste aujourd'hui : trois filtres, du moins cher au plus cher. Ce n'est pas un résultat, c'est l'hypothèse que le banc doit confirmer ou démentir.</p>
+<div class="carte">
+<svg class="schema" viewBox="0 0 860 330" role="img" aria-labelledby="t2 d2">
+<title id="t2">Les trois filtres de la porte</title><desc id="d2">Une demande passe d'abord par une règle fixe, puis par un petit modèle local, puis par le gros modèle si aucun des deux n'est sûr.</desc>
+<defs><marker id="g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path class="tete-fl" d="M0 0 10 5 0 10z"/></marker></defs>
+<rect class="neutre" x="10" y="120" width="130" height="80" rx="16"/><text x="75" y="156" text-anchor="middle">Demande</text><text class="p" x="75" y="177" text-anchor="middle">arrive</text>
+<path class="fl" marker-end="url(#g)" d="M140 160h40"/>
+<rect class="bloc" x="182" y="100" width="170" height="120" rx="16"/><text x="267" y="140" text-anchor="middle">1. Règle fixe</text><text class="p" x="267" y="162" text-anchor="middle">un script, gratuit,</text><text class="p" x="267" y="180" text-anchor="middle">instantané</text>
+<path class="fl" marker-end="url(#g)" d="M352 160h40"/>
+<rect class="bloc" x="394" y="100" width="190" height="120" rx="16"/><text x="489" y="140" text-anchor="middle">2. Petit modèle local</text><text class="p" x="489" y="162" text-anchor="middle">sur un Mac de la maison,</text><text class="p" x="489" y="180" text-anchor="middle">gratuit, un peu lent</text>
+<path class="fl" marker-end="url(#g)" d="M584 160h40"/>
+<rect class="bloc" x="626" y="100" width="224" height="120" rx="16"/><text x="738" y="140" text-anchor="middle">3. Gros modèle</text><text class="p" x="738" y="162" text-anchor="middle">Claude, payant,</text><text class="p" x="738" y="180" text-anchor="middle">pour ce qui est difficile</text>
+<path class="ok" d="M267 100V58"/>
+<rect class="ok" x="190" y="18" width="150" height="40" rx="12" style="fill:var(--carte)"/><text x="265" y="43" text-anchor="middle">Réglé ici</text>
+<rect class="ok" x="414" y="18" width="150" height="40" rx="12" style="fill:var(--carte)"/><text x="489" y="43" text-anchor="middle">Réglé ici</text>
+<path class="ok" d="M489 100V58"/>
+<rect x="10" y="262" width="840" height="52" rx="14" class="neutre"/><text x="430" y="285" text-anchor="middle">Le contrôle : une réponse « sûre » mais fausse est le vrai danger.</text><text class="p" x="430" y="303" text-anchor="middle">Le banc compte donc les erreurs commises avec assurance, pas seulement le score moyen.</text>
+</svg>
+<p class="lire"><b>À lire :</b> plus une demande est réglée tôt (à gauche), moins elle coûte. Le seuil de 0,99 veut dire : le petit modèle ne répond que s'il est sûr à 99 %, sinon il laisse passer.</p>
+</div>
+
+<h2>Les machines au travail</h2>
+<p class="sous">Les mesures tournent sur des Mac qui ne servent pas à travailler, pour ne jamais ralentir le poste principal.</p>
+<div class="carte">
+<svg class="schema" viewBox="0 0 860 220" role="img" aria-labelledby="t3 d3">
+<title id="t3">Répartition du banc sur les machines</title><desc id="d3">Le Mac mini est le chef d'orchestre, le MacBook M3 reçoit une partie du banc, le M1 est en renfort, le poste de travail n'est pas utilisé de jour.</desc>
+<defs><marker id="h" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path class="tete-fl" d="M0 0 10 5 0 10z"/></marker></defs>
+<rect class="bloc" x="330" y="14" width="200" height="74" rx="16"/><text x="430" y="46" text-anchor="middle">Mac mini</text><text class="p" x="430" y="68" text-anchor="middle">chef d'orchestre + banc</text>
+<rect class="bloc" x="40" y="140" width="220" height="66" rx="16"/><text x="150" y="168" text-anchor="middle">MacBook M3 Pro</text><text class="p" x="150" y="188" text-anchor="middle">même banc, autre moitié</text>
+<rect class="neutre" x="320" y="140" width="220" height="66" rx="16" stroke-dasharray="6 5"/><text x="430" y="168" text-anchor="middle">MacBook M1 Pro</text><text class="p" x="430" y="188" text-anchor="middle">renfort, éteint pour l'instant</text>
+<rect class="neutre" x="600" y="140" width="220" height="66" rx="16"/><text x="710" y="168" text-anchor="middle">Poste de travail</text><text class="p" x="710" y="188" text-anchor="middle">aucune mesure de jour</text>
+<path class="fl" marker-end="url(#h)" d="M380 88 150 138"/><path class="fl" marker-end="url(#h)" stroke-dasharray="5 5" d="M430 88v50"/>
+</svg>
+<p class="lire"><b>À lire :</b> le chef d'orchestre découpe le banc en paquets et les envoie aux machines prêtes ; chacune renvoie ses résultats, qui sont rassemblés ensuite.</p>
+</div>
+<div class="machines" id="machines" style="margin-top:12px"></div>
+
+<h2>Les étapes</h2>
+<p class="sous">Mises à jour au fil de la journée. Une étape est « faite » quand son résultat est vérifié, pas quand elle est lancée.</p>
+<ol class="etapes" id="etapes"></ol>
+
+<h2>Les chiffres de départ</h2>
+<p class="sous">Mesures déjà en main au lever du jour. Chacune porte sa source. Les chiffres du jour s'ajouteront ici.</p>
+<div class="chiffres" id="chiffres"></div>
+
+<h2>Le journal</h2>
+<p class="sous">Le plus récent en bas.</p>
+<ul class="journal" id="journal"></ul>
+
+<h2>Les idées de skills</h2>
+<p class="sous">Une skill est un mode d'emploi réutilisable pour Claude. Chaque idée partagée dans la journée apparaît ici avec ce qu'on en a fait.</p>
+<div id="idees"></div>
+
+<h2>Le vocabulaire</h2>
+<div class="carte"><dl class="glossaire">
+<dt>Banc</dt><dd>Une série de demandes types qu'on fait passer à un modèle pour noter ses réponses, toujours les mêmes, afin de comparer.</dd>
+<dt>Porte</dt><dd>Le filtre placé à l'entrée : il décide qui répond (script, petit modèle ou gros modèle).</dd>
+<dt>Modèle local</dt><dd>Un modèle d'IA qui tourne sur un de nos Mac, sans internet et sans facture ; plus petit, donc moins sûr.</dd>
+<dt>Ollama</dt><dd>Le programme qui fait tourner ces modèles locaux.</dd>
+<dt>Seuil</dt><dd>Le niveau d'assurance exigé avant de laisser le petit modèle répondre ; 0,99 = sûr à 99 %.</dd>
+<dt>Erreur grave</dt><dd>Une réponse fausse donnée avec assurance : la porte l'a laissée passer sans la douter.</dd>
+<dt>Skill</dt><dd>Un mode d'emploi que Claude lit pour savoir comment mener un type de tâche.</dd>
+</dl></div>
+
+<p class="pied">Page de suivi, sans compte et sans cookie. Elle relit ses données toute seule ; rien à rafraîchir. Aucune donnée privée n'y figure.</p>
+<noscript><p class="vide">Cette page a besoin de JavaScript pour afficher les données du jour.</p></noscript>
+</main>
+
+<script is:inline type="application/json" id="donnees-initiales" set:html={JSON.stringify(donnees)}></script>
+<script is:inline>
+(function(){
+  var $=function(i){return document.getElementById(i)};
+  var esc=function(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})};
+  var D=JSON.parse($('donnees-initiales').textContent);
+  function rendre(){
+    $('titre').textContent=D.titre;
+    $('resume').textContent=D.resume;
+    var d=new Date(D.date+'T12:00:00');
+    $('date').textContent=d.toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+    $('etat').textContent=D.etat;
+    var faits=D.etapes.filter(function(e){return e.statut==='fait'}).length;
+    $('avance').textContent=faits+' / '+D.etapes.length;
+    $('jauge').style.width=(100*faits/D.etapes.length)+'%';
+    $('etapes').innerHTML=D.etapes.map(function(e){
+      return '<li class="etape" data-s="'+esc(e.statut)+'"><span class="n">'+(e.statut==='fait'?'✓':esc(e.n))+'</span><div><h3>'+esc(e.titre)+'</h3><p>'+esc(e.detail)+'</p></div><span class="badge" data-s="'+esc(e.statut)+'">'+esc(e.statut==='a venir'?'à venir':e.statut==='bloque'?'bloqué':e.statut)+'</span></li>';
+    }).join('');
+    $('chiffres').innerHTML=D.chiffres.map(function(c){
+      return '<div class="carte chiffre"><b>'+esc(c.valeur)+'</b><p>'+esc(c.libelle)+'</p><small>Source : '+esc(c.source)+'</small></div>';
+    }).join('');
+    $('machines').innerHTML=D.machines.map(function(m){
+      return '<div class="carte machine"><b><span class="pastille" data-e="'+esc(m.etat)+'"></span>'+esc(m.nom)+'</b><span class="vide" style="font-style:normal;color:var(--doux)">'+esc(m.role)+' · '+esc(m.etat)+'</span></div>';
+    }).join('');
+    $('journal').innerHTML=D.journal.map(function(j){return '<li><time>'+esc(j.quand)+'</time>'+esc(j.texte)+'</li>'}).join('');
+    $('idees').innerHTML=D.idees.length?'<div class="chiffres">'+D.idees.map(function(i){
+      return '<div class="carte chiffre"><b style="font-size:18px;color:var(--encre)">'+esc(i.titre)+'</b><p>'+esc(i.texte)+'</p><small>'+esc(i.suite||'')+'</small></div>';
+    }).join('')+'</div>':'<p class="vide">Aucune idée reçue pour l\'instant.</p>';
+    maj();
+  }
+  function maj(){
+    var fin=new Date(D.fin), r=fin-new Date();
+    $('reste').textContent=r<=0?'Terminé':Math.floor(r/3600000)+' h '+String(Math.floor(r%3600000/60000)).padStart(2,'0');
+    var m=Math.round((new Date()-new Date(D.maj))/60000);
+    $('maj').textContent=m<1?'à l\'instant':m<60?'il y a '+m+' min':'il y a '+Math.floor(m/60)+' h '+String(m%60).padStart(2,'0');
+  }
+  function relire(){
+    fetch('/chantier.json?'+Date.now(),{cache:'no-store'}).then(function(r){return r.ok?r.json():null}).then(function(j){if(j&&j.maj!==D.maj){D=j;rendre()}}).catch(function(){});
+  }
+  rendre(); relire(); setInterval(maj,30000); setInterval(relire,60000);
+})();
+</script>
+</body>
+</html>
