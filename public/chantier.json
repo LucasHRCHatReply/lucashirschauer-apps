@@ -2,7 +2,7 @@
  "titre": "Le chantier du jour",
  "date": "2026-11-25",
  "fin": "2026-11-25T19:30:00+01:00",
- "maj": "2026-11-25T10:30:00+01:00",
+ "maj": "2026-11-25T10:45:00+01:00",
  "etat": "en cours",
  "resume": "Objectif : apprendre à un gros modèle qui orchestre à confier un maximum de tâches à des petits modèles locaux, sans perdre en qualité, en gardant le contrôle. La journée enchaîne des bancs d'essai, une lecture des erreurs, une veille et des corrections, jusqu'à 19 h 30. Chaque tâche finit classée : déléguable avec contrôle, à l'essai, ou à garder pour le gros modèle.",
  "etapes": [
@@ -90,6 +90,10 @@
  ],
  "journal": [
   {
+   "quand": "25/11 10 h 45",
+   "texte": "Banc 2, première lecture (qwen3:8b, 72 tâches) : réformatage, classement, copie et résumé 12/12 ; extraction 10/12 avec 2 erreurs non vues par le contrôle ; somme 0/12. Le M3 est prêt et fait le même banc."
+  },
+  {
    "quand": "25/11 10 h 30",
    "texte": "Banc 1 interprété : qwen3:8b est plus juste (58/60) mais trois fois plus lent que gemma4:e4b ; LFM3 n'apporte rien de mesurable ici. Le tri à l'entrée reste une piste annexe. Banc 2 en cours sur le mini."
   },
@@ -124,7 +128,7 @@
   {
    "nom": "MacBook M3 Pro",
    "role": "mêmes bancs, autres modèles",
-   "etat": "Ollama à installer"
+   "etat": "prêt : Ollama en marche, 3 modèles, banc 2 lancé"
   },
   {
    "nom": "MacBook M1 Pro",
@@ -138,17 +142,18 @@
   }
  ],
  "catalogue": {
-  "delegable": [],
+  "delegable": [
+   "Reformater une date (12/12 pour qwen3:8b)",
+   "Classer dans une liste fermée (12/12)",
+   "Copier un passage exact (12/12)",
+   "Résumer en une phrase avec chiffres à garder (12/12)"
+  ],
   "a_tester": [
-   "Extraire des champs d'un texte vers du JSON",
-   "Résumer un texte court",
-   "Reformater (dates, listes, tableaux)",
-   "Classer dans une liste fermée",
-   "Copier un passage exact"
+   "Extraire des champs vers du JSON (10/12, 2 erreurs passées par le contrôle)"
   ],
   "garder": [
+   "Additionner des montants : 0/12 juste, le contrôle de forme laisse tout passer ; à faire par script",
    "Décider d'une architecture",
-   "Écrire du code qui agit sur le système",
    "Tout ce qui engage un client"
   ]
  },
@@ -186,6 +191,15 @@
    "tache": "Banc 2 · 6 types de tâches, 12 essais chacun",
    "fait": 0,
    "total": 360,
+   "resultat": "qwen3:8b fini : 6 types, voir ci-dessous",
+   "statut": "en cours"
+  },
+  {
+   "machine": "MacBook M3 Pro",
+   "modele": "granite4.2:3b, qwen3:8b, qwen3.5:9b",
+   "tache": "Banc 2 · mêmes 6 types de tâches, 12 essais chacun",
+   "fait": 0,
+   "total": 216,
    "resultat": "",
    "statut": "en cours"
   }
